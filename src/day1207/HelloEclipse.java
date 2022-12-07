@@ -25,6 +25,11 @@ public class HelloEclipse {
 		// 여러줄 주석은 ctrl shift 슬래시인데 걸기만하고 뺄 순 없다.
 		// 닷 주석은 알트 슈프트 j
 		// ctrl shift f 정렬해주는 것  >>jsp나 htmp은 이거 쓰면 큰일남
+		// ctrl shift w 열어논 클래스 다삭제
+		//ctrl m 전체화면
+		//ctrl 누르고 클래스나 변수에 갖다 대면 값이나 클래스로 이동
+		//그 상태에서 알트 방향키 좌우 누르면 바로 왔다 갔다 거림
+		//윈도우 프리퍼런스(환경 설정)
 		int i = 0;
 		System.out.println(i);
 
