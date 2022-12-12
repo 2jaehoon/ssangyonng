@@ -5,7 +5,7 @@ public class Work1207 {
 	public static void main(String[] args) {
 		//1.
 		int i = 12;
-		i = ~(i)+1;
+		i = ~i+1;
 		System.out.println("i의 2의 보수 : " + i);
 		System.out.println();
 		//2
@@ -24,6 +24,7 @@ public class Work1207 {
 		int temp4 = 0;
 		temp4= Integer.MAX_VALUE;
 		System.out.println("temp4&65535 : " + (temp4&65535));
+		System.out.println("temp4&0x0000FFFF : " + (temp4&0x0000FFFF));
 		System.out.println();
 		
 		

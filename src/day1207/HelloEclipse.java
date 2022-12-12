@@ -35,6 +35,8 @@ public class HelloEclipse {
 
 		System.out.println("안녕 이클립스!");
 		
+		//System.out.println(Integer.parseInt("1234b")+Integer.parseInt("1234"));//숫자형태의 문자열이 아니므로 error가 발생
+		
 	}
 
 }
