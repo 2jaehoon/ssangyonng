@@ -27,7 +27,7 @@ public class TestMethod {
 		TestMethod.staticMethod();
 //		tm.staticMethod() //static method는 특정객체에 속한 instance변수 값을 사용하는 method가
 		//아니므로 객체명으로 호출하지 않는다.
-
+    
 	}//main
 
 }//class
