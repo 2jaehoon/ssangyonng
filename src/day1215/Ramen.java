@@ -10,14 +10,17 @@ package day1215;
 public class Ramen {
 	private String name;
 	private int noodle, powder, kelp;
-	public String pc = "-----PC에서는-----" , home = "-----집에서는------";
+
+	public Ramen() {
+		//기본생성자에서는 자신이 생각하는 라면으로 기본 값을 설정해보세요
+		this("신라면",1,2,0);
+	}
 	
-	/**
-	 * 라면의 이름을 설정하는 method
-	 * @param name 라면의 이름
-	 */
-	public void setName(String name) {
-		this.name=name;
+	public Ramen(String name, int noodle, int powder, int kelp) {
+		this.name = name;
+		this.noodle = noodle;
+		this.powder = powder;
+		this.kelp = kelp;
 	}
 	
 	/**
@@ -26,15 +29,6 @@ public class Ramen {
 	 */
 	public String getName() {
 		return name;
-	}
-	
-	
-	/**
-	 * 면의 개수을 설정하는 method
-	 * @param noodle 면의 개수
-	 */
-	public void setNoodle(int noodle) {
-		this.noodle=noodle;
 	}
 	
 	/**
@@ -46,29 +40,13 @@ public class Ramen {
 	}
 	
 	/**
-	 * 라면 스프의 개수를 설정하는 method
-	 * @param powder 라면 스프의 개수
-	 */
-	public void setPowder(int powder) {
-		this.powder=powder;
-	}
-	
-	/**
 	 * 라면 스프 개수를 반환하는 method
 	 * @return 라면 스프의 개수
 	 */
 	public int getPowder() {
 		return powder;
 	}
-	
-	/**
-	 * 다시마의 개수를 설정하는 method
-	 * @param kelp 다시마의 개수
-	 */
-	public void setKelp(int kelp) {
-		this.kelp=kelp;
-	}
-	
+
 	/**
 	 * 다시마의 개수를 반환하는 method
 	 * @return 다시마의 개수
@@ -79,22 +57,25 @@ public class Ramen {
 	
 	/**
 	 * overloading
-	 * 집에서 라면을 먹는 행동 설정 method
+	 * 라면의 상태 꼬들꼬들 설정 method
 	 * @return 집에서 라면 먹는 행동
 	 */
-	public String eat() {
-		return  "나는 집에서 " + "면의 개수가 " + noodle + "이고 " +  
-	" 라면 스프의 개수가 " + powder + "이고 " + "다시마 개수가 " + kelp + "인 " + name + "라면을 " + "먹는다.";
+	// method는 기능입니다. 라면이 제공하는 기능으로 추상화를 해서 구현해야하는데
+	//라면 이 스스로를 먹을 수 는 없잖아요?
+	//라면이 제공하는 기능 : 라면의 상태, 꼬들꼬들, 불어터짐?
+	public String state() {
+		return   "면의 개수가 " + noodle + "개이고" +  
+	" 라면 스프의 개수가 " + powder + "개이고 \n" + "다시마 개수가 " + kelp + "개인 " + name + " 라면이 " + "꼬들꼬들하다.";
 	}
 	
 	/**
-	 * 밖에서 라면을 먹는 행동 설정 method
-	 * @param place 라면을 사먹는 장소
-	 * @param price 라면의 가격
-	 * @return 밖에서 라면 먹는 행동
+	 * 라면의 상태 불어터짐 method
+	 * @param place 
+	 * @param price 
+	 * @return 
 	 */
-	public String eat(String place, int price) {
-		return  "나는 " + place +" 에서 " + "가격이 " + price +  "면의 개수가 " + noodle + "이고 " +  
-	" 라면 스프의 개수가 " + powder + "이고 " + "다시마 개수가 " + kelp + "인 " + name + "라면을 " + "먹는다.";
+	public String state(String state) {
+		return  "면의 개수가 " + noodle + "개이고" +  
+	" 라면 스프의 개수가 " + powder + "개이고 \n" + "다시마 개수가 " + kelp + "개인 " + name + " 라면이 " +state;
 }
 }

@@ -7,6 +7,8 @@ package day1214;
  *
  */
 
+
+
 public class Person {
 
 	private int eye, nose, mouth;
