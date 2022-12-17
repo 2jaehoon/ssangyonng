@@ -3,7 +3,7 @@ package day1217;
 public class UseRrn {
 
 	public static void main(String[] args) {
-		String ssn = "960125-1111111";
+		String ssn = "970125-1111111";
 		Rrn rrn = new Rrn(ssn);
 		if(ssn.length()==14) {
 			if(ssn.charAt(6)=='-') {
