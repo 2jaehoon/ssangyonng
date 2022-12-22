@@ -23,7 +23,7 @@ public class work1219 {
 		}
 		System.out.println();
 
-			
+		System.out.print("\"경\"을 가지고 있는 이름 : ");
 		for (int i = 0; i < name.length; i++) {
 			if (name[i].contains("경")) {
 				System.out.print(name[i] + " ");
@@ -43,8 +43,8 @@ public class work1219 {
 			}
 		}
 		System.out.println();
-		System.out.println(max);
-		System.out.println(min);
+		System.out.println("최댓값 : " + max);
+		System.out.println("최솟값 : " + min);
 		
 		
 	}
