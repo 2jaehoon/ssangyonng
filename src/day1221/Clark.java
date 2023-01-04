@@ -1,11 +1,13 @@
 package day1221;
 
+import day1223.Fly;
+
 /**
  * 눈, 코, 입, 먹는 일은 Person클래스에서 사용 힘이 쎈 자신만의 특징 구현.
  * 
  * @author user final
  */
-public class Clark extends Person {
+public class Clark extends Person implements Fly {
 	public int power;
 
 	/**
@@ -45,6 +47,18 @@ public class Clark extends Person {
 		String result = "";
 		
 		return result;
+	}
+
+	@Override
+	public String drivingForce() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String upwardForce() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
