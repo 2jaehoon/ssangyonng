@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class UseFileDialog extends JFrame {
+public class UseFileDialog extends JFrame{
 	
 	private JButton jbtnFileOpen;
 	private JButton jbtnFileSave;

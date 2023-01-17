@@ -51,7 +51,10 @@ public class Work0102 extends JFrame {
 		JButton jbUpdate = new JButton("변경");
 		JButton jbDelete = new JButton("삭제");
 		JButton jbEnd = new JButton("종료");
+		JTextField asd = new JTextField("asd");
 		JPanel jpButton = new JPanel();
+		
+		jpButton.add(asd);
 		jpButton.add(jbInput);
 		jpButton.add(jbUpdate);
 		jpButton.add(jbDelete);
