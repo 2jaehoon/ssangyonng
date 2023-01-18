@@ -29,6 +29,7 @@ public class UseFileReader {
 					String data = "";
 					while ( (data = br.readLine()) != null) { //\n전까지 읽어 들인다.
 						System.out.println(data);
+						
 					}//end while
 				} finally {
 					if (br != null) {

@@ -28,6 +28,18 @@ public class JavaMemoEvt extends WindowAdapter implements ActionListener {
 
 	@Override
 	public void windowClosing(WindowEvent we) {
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		jm.dispose();
 	}// windowClosing
 
