@@ -50,7 +50,11 @@ public class SistLoginEvt extends WindowAdapter implements ActionListener {
 		    	new SelectDialog(sl);
 		    	sl.dispose();
 		    	
+		    }else if(b=="asd"){
+		    	/////////////////
+		    	
 		    }else {
+  
 		       JOptionPane.showMessageDialog( null , "PassWord 정보가 잘못되었습니다.");
 		    }//end else
 		 }else {

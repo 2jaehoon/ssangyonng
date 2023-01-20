@@ -55,6 +55,7 @@ public class SelectDialog extends JDialog {
 	      background.add(jlblLine);
 	      background.add(jlblFirstLine);
 	      background.add(jlblLastLine);
+	      
 	      background.add(jtfFirstLine);
 	      background.add(jtfLastLine);
 	      
@@ -101,8 +102,17 @@ public class SelectDialog extends JDialog {
 		return jbtnView;
 	}//getJbtnView
 	
+
 	public JButton getJbtnReport() {
 		return jbtnReport;
 	}//getJbtnReport
+	
+	public JTextField getJtfFirstLine() {
+		return jtfFirstLine;
+	}//getJtfFirstLine
+	
+	public JTextField getJtfLastLine() {
+		return jtfLastLine;
+	}//getJtfLastLine
 
 }//class

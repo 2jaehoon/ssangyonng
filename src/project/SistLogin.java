@@ -20,7 +20,7 @@ public class SistLogin extends JFrame {
    private JLabel jlblId;
    private JLabel jlblPw;
    private JLabel jlblSist;
-   private JTextField jtfId;
+   static JTextField jtfId;
    private JPasswordField jtfPw;
    
 
