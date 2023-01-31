@@ -8,500 +8,507 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-import day0104.UseFileDialog;
-
 public class SelectDialogEvt extends WindowAdapter implements ActionListener {
-	
-	private SelectDialog sd;//has a
-	
+
+	private SelectDialog sd;// has a
+
 	private FileDialog fdView;
 	private FileDialog fdReport;
-	
-	private List<String> logLine ;
-	private int allCodeCnt;
-	
-	
-	
-		
-	public SelectDialogEvt( SelectDialog sd ) {//has a
-		this.sd=sd;
-	}//SelectDialogEvt
-	
+
+	private List<String> logLine;
+	private int allCodeCnt; // logLine 전체 low수
+
+	public SelectDialogEvt(SelectDialog sd) {// has a
+		this.sd = sd;
+	}// SelectDialogEvt
 
 	@Override
 	public void windowClosing(WindowEvent we) {
 		sd.dispose();
-	}//windowClosing
+	}// windowClosing
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		
-		if( ae.getSource() == sd.getJbtnView()) {
+
+		if (ae.getSource() == sd.getJbtnView()) {
 			try {
-				viewBtn();  
-//				connectBrowser(); //2번메소드
-//				servicePerform(); //3번메소드
-//				mostRequestTime(); //4번메소드
-//				unNormalRequest(); //5번메소드
-//				requestError(); //6번메소드
-				
-				
-//				maxUsedKey(); //보류 //1번메소드 
+				if (sd.getJtfFirstLine().getText().isEmpty() || sd.getJtfLastLine().getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "라인을 입력해주세요^^;");
+				} else if (Integer.valueOf(sd.getJtfFirstLine().getText()) >= Integer
+						.valueOf(sd.getJtfLastLine().getText())) {// 첫번째 라인값이 마지막 라인값과 동일하거나 클 경우
+					JOptionPane.showMessageDialog(null, "첫번째 라인값이 마지막 라인값과 동일하거나 큽니다. \n재입력 바랍니다.", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					viewBtn();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NullPointerException npe) {
+
+//			} catch (NumberFormatException nfe) {
+
 			}
-			////////////문제점 열어야지 아래 것이 실행 되게 설정해야함 그래서
-			//viewBtn 메서드 안에 뷰포인트를 조건문으로 해서 넣는 게 좋아보임
-//			new ViewPrint(sd);       ///////////////////////////////sd로 수정 sd의 값을 가져와야대서
-//			String str=sd.getTitle();
-//			System.out.println( str );
-			/////여기있던 것을 viewBtn으로 아래로 내려보냄 확인요망
-			//이렇게 되면 클릭시에만 뷰화면이 열리게 설정됨
-		}//end if
-		
-		if( ae.getSource() == sd.getJbtnReport()) {
-//			reportBtn();
-			String a = SistLogin.jtfId.getText();
+		} // end if
+
+		if (ae.getSource() == sd.getJbtnReport()) {
+			String slId = SistLogin.jtfId.getText();
+			String sdFirstlLine = sd.getJtfFirstLine().getText();
+			String sdLastLine = sd.getJtfLastLine().getText();
 			try {
-			if(a.trim().equals("root")) {
-				System.out.println("탈락");
-				//okay
-				JOptionPane.showInternalConfirmDialog(null,"asd");
-			}else {
-				asd();
-			
-			}//end if
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}//actionPerformed
-	
-	public void viewBtn() throws IOException {
-		fdView=new FileDialog( sd, "파일 열기", FileDialog.LOAD );
-		fdView.setDirectory("E:\\project");
-		fdView.setVisible( true );
-		
-		//디렉토리명, 파일명 얻기
-		String path=fdView.getDirectory();
-		String name=fdView.getFile();
-		
-		if( name !=null ) {
-			sd.setTitle( path + name );
-			new ViewPrint(sd,this); //네임값을 받을시 즉 클릭시에만 열리게 설정
-		}//end if
-	}//viewBtn
-	
-	
-	public void reportBtn() {
-		fdReport=new FileDialog( sd, "파일 저장", FileDialog.SAVE );
-		fdReport.setDirectory("E:\\project");
-		fdReport.setVisible( true );
-		
-		//디렉토리명, 파일명 얻기
-		String path=fdReport.getDirectory();
-		String name=fdReport.getFile();
-		
-		if( name !=null ) {
-			sd.setTitle( path + name );
-		}//end if
-		
-	}//reportBtn
-	
-	
-	
-	public void asd() throws IOException {
-		FileDialog fdReport = new FileDialog( sd, "파일 저장", FileDialog.SAVE );
-
-		// 윈도우 컴포넌트는 setVisible을 해야 사용 가능
-		fdReport.setVisible(true);
-		
-
-		// 디렉토리명. 파일명 얻기
-		String path = fdReport.getDirectory();
-		String name = fdReport.getFile();
-		
-//		StringWriter sw = new StringWriter();
-//		System.out.println(sw);
-		
-
-		if (path != null) {
-			sd.setTitle("다른이름으로 파일 저장 " + path + name);
-			File file = new File(path + name);
-			BufferedWriter bw = null;
-			try {
-				bw = new BufferedWriter(new FileWriter(path + name+".txt")); ////여기서 바꾸면 됨 okay
-				String msg = ViewPrint.jlblView.getText();
-				bw.write(msg);
-
-				bw.flush();
-			} finally {
-				if (bw != null) {
-//					br.close();
-					bw.close();
+				if (slId.trim().equals("root")) {// root계정시 실행 불가.
+					JOptionPane.showMessageDialog(null, "root계정은 사용불가(~,.~)");
+				} else {// root이면 실행.
+					if (sdFirstlLine.isEmpty() || sdLastLine.isEmpty()) { ////// 라인 수 입력란이 비어있을 때 출력
+						JOptionPane.showMessageDialog(null, "라인을 입력한 후 VIEW버튼을 눌러주세요");
+					} else {
+						mkdir();
+						reportSave();
+						setFileName();
+					} // end else
 
 				}
-			}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (NullPointerException npe) {
+				JOptionPane.showMessageDialog(null, "VIEW버튼먼저 Click~!~!");
+			} // catch
 
 		} // end if
-		
+
+	}// actionPerformed
+
+	public void mkdir() {
+		File file = new File("E:\\project\\report"); // project안에 report폴더 생성
+		if (!file.exists()) {
+			file.mkdirs();
+		}
+	}// mkdir
+
+	public void viewBtn() throws IOException {
+		fdView = new FileDialog(sd, "파일 열기", FileDialog.LOAD);
+		fdView.setDirectory("E:\\project"); // 열었을 때 파일 경로 설정.
+		fdView.setVisible(true);
+
+		// 디렉토리명, 파일명 얻기
+		String path = fdView.getDirectory();
+		String name = fdView.getFile();
+
+		if (name != null) {
+			sd.setTitle(path + name);
+			new ViewPrint(sd, this); // 네임값을 받을시 즉 클릭시에만 열리게 설정
+		} // end if
+	}// viewBtn
+
+	public void reportSave() throws IOException {
+		String path = fdView.getDirectory();// 인식이 왜 될까 ㅅㅂ?
+		String name = fdView.getFile();
+		File file = new File("E:\\project\\report\\abc.txt");
+
+		// 0. 파일이 존재하면 덮어쓸 것인가를 물어본다.
+		// 파일이 없다면 파일을 생성하고 파일이 있다면 덮어 쓸것인지를 물어본 후
+		// ConfirmDialog로 물어본 후 예라면 덮어쓰고 아니오라면 파일을 덮어쓰지 않도록
+		boolean createFlag = false;
+		if (file.exists()) {
+			int select = JOptionPane.showConfirmDialog(null, " 이미 파일이 존재합니다 덮겠습니까?", "선택하세요",
+					JOptionPane.YES_NO_OPTION);
+
+			switch (select) {
+			case JOptionPane.OK_OPTION:
+				createFlag = false;
+				break;
+			case JOptionPane.NO_OPTION:
+				createFlag = true;
+			}// end switch
+		} else {
+		}
+
+		BufferedWriter bw = null;
+		try {
+			// 1. 스트림 생성 : 없으면 만들고, 있으면 덮어씀
+			if (!createFlag) {
+				bw = new BufferedWriter(new FileWriter(file));
+				// 생성 또는 덮어 씀
+				String resultMsg = ViewPrint.jlblResult.getText();
+				String msg = ViewPrint.jtaView.getText();
+
+				bw.write(resultMsg + msg);
+
+				bw.flush();
+
+				JOptionPane.showMessageDialog(null, "저장했습니다.");
+				JOptionPane.showMessageDialog(null, "다른 결과를 얻으시려면 라인값을  재입력후 \nVIEW버튼을 누른 후 다시 실행해주세요.", "안내",
+						JOptionPane.INFORMATION_MESSAGE);
+
+			} // end if
+
+		} finally {
+
+			if (bw != null) {
+				// 스트림에 남아있는 내용을 목적지로 분출(flush)하고 연결을 끊는다.
+				bw.close();
+			} // end if
+		} // end finally
+
+	} // UseFileOutputStream
+
+	public void setFileName() {
+		// 이름을 변경시킬 파일을 포함한 디렉토리 경로 가져오기
+		File file = new File("E:\\project\\report");
+
+		// 하위 파일 가져오기
+		File[] sublist = file.listFiles();
+
+		// 파일별 처리
+		for (int i = 0; i < sublist.length; i++) {
+			// 파일 속성을 가져오기 위한 class
+			BasicFileAttributes attr = null;
+
+			// 파일 이름을 가져와서 확장자 설정
+			String filename = sublist[i].getName();
+			String fExtension = ".dat"; // 확장자
+
+			if (filename.lastIndexOf(",") != -1) {
+				fExtension = filename.substring(filename.lastIndexOf("."));
+			} // end if
+
+			try {
+				// 파일 속성 가져온다.
+				attr = Files.readAttributes(sublist[i].toPath(), BasicFileAttributes.class);
+
+				// 파일의 생성시간 , 수정시간 가져옴
+				FileTime crtFTime = attr.creationTime();
+				FileTime mdfFTime = attr.lastModifiedTime();
+
+				// date format을 설정
+				SimpleDateFormat dataform = new SimpleDateFormat("yyyyMMdd_HHmmss");
+				// 이걸로 파일명을 날짜별로 나오게 사용도 가능
+				String crtDTime = dataform.format(new Date(crtFTime.toMillis()));
+				String mdfDTime = dataform.format(new Date(mdfFTime.toMillis()));
+
+				// 파일 이름을 디폴드 값으로 설정
+				String fileDate = crtDTime;
+
+				/* 수정한 날짜가 만든 날짜가 뒤바뀐 경우 처리 */
+				if (Integer.parseInt(crtDTime.substring(0, 8)) > Integer.parseInt(mdfDTime.substring(0, 8))) {
+					fileDate = mdfDTime;
+				}
+
+				// 파일 이름 변경
+//				sublist[i].renameTo(new File(sublist[i].getParent() + "\\" + "report_" + fileDate+ fExtension ));
+				sublist[i].renameTo(
+						new File(sublist[i].getParent() + "\\" + "report_" + crtFTime.toMillis() + fExtension));
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			} // end catch
+
+		} // end for
+
 	}
-	
-	
-	
-	////////////////////////////////////리턴값으로 받아와야되는지 생각//////////////////////////////////////////////
-	
-	
+
+
 //	1. 최다사용 키의 이름과 횟수 | java xx회
 	public String maxUsedKey() throws IOException {
 		logLine = new ArrayList<String>();
 		List<String> keyLine = new ArrayList<String>();
-		Map<String,Integer> map=new HashMap<String,Integer>();
-		Map<String,Integer> maxMap=new HashMap<String,Integer>();
-		
-		File file = new File(sd.getTitle());
-		
-		if(file.exists()) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Integer> maxMap = new HashMap<String, Integer>();
+
+		File file = new File(sd.getTitle());///////////////////////// viewBtn에서 설정한 경로를 타이틀로 옮겨 뷰프린트 타이틀로 옮겨 super() 안의
+											///////////////////////// 그 타이틀 값을 받아옴
+
+		if (file.exists()) {
 			BufferedReader br = null;
-			try{
+			try {
 				// 2. Stream을 사용한 연결
 				br = new BufferedReader(new FileReader(file));
-				// 3. 줄 단위로 읽기 
+				// 3. 줄 단위로 읽기
 				String data = "";
 				String key = "";
-				allCodeCnt=0;
-				while ( (data = br.readLine()) != null) { //\n전까지 읽어 들인다.
+				allCodeCnt = 0;
+				while ((data = br.readLine()) != null) { // \n전까지 읽어 들인다.
 					allCodeCnt++;
-					logLine.add(data);//1986까지 들어가있는 김성태
-						if(data.contains("key")){
-							key=data.substring( data.indexOf("=")+1, data.indexOf("&"));
-							keyLine.add(key);
-						}//end if
-					}//end while
-				
-			}//try	
+					logLine.add(data);// 1986까지 들어가있는 김성태
+					if (data.contains("key")) {
+						key = data.substring(data.indexOf("=") + 1, data.indexOf("&"));
+						keyLine.add(key);
+					} // end if
+				} // end while
+
+			} // try
 			finally {
 				if (br != null) {
-					//4. 연결끊기
+					// 4. 연결끊기
 					br.close();
-				}//end if
-			}//finally
-			
-		}else {
+				} // end if
+			} // finally
+
+		} else {
 			JOptionPane.showMessageDialog(null, file + "");
 		} // end if
-		
-		int num=0;
-		for(String str : keyLine ) {
-			Integer count = map.get(str);
-			if( count == null ) {
-				map.put(str, 1);
-			}else {
-				map.put(str, count+1 );
-			}//end else
-			num++;
-		}//end for
 
-		double proportion=(double)num;
-		for(String opp : map.keySet() ) {
-			
-//			System.out.println(opp + " : " + map.get(opp) + "(" + (map.get(opp)/proportion)*100+"%)" );
-//			System.out.printf( "%s \t %d번(%.2f%%)\n",opp, map.get(opp), ((map.get(opp)/proportion)*100)  );
+		int num = 0;
+		for (String str : keyLine) {
+			Integer count = map.get(str);
+			if (count == null) {
+				map.put(str, 1);
+			} else {
+				map.put(str, count + 1);
+			} // end else
+			num++;
+		} // end for
+
+		double proportion = (double) num;
+		for (String opp : map.keySet()) {
 			maxMap.put(opp, map.get(opp));
-		}//end for
-		
-		Entry<String, Integer> maxEntry=null;
-		
-		Set<Entry<String, Integer>> entrySet=maxMap.entrySet();
+		} // end for
+
+		Entry<String, Integer> maxEntry = null;
+
+		Set<Entry<String, Integer>> entrySet = maxMap.entrySet();
 		for (Entry<String, Integer> entry : entrySet) {
 			if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
 				maxEntry = entry;
-			}//end if
-		}//end for
-		
-		System.out.println( " daf" + maxMap);
-//		System.out.println( "최다사용 키 : " + maxEntry.getKey() + ", 최다사용 키의 횟수 : " + maxEntry.getValue() );
-//		System.out.printf( "%s : %.2f%%", maxEntry.getKey(), ((maxEntry.getValue()/proportion)*100));
-		return maxEntry.getKey()+ "   " + maxEntry.getValue() +"회";
-	}//maxUsedKey
-	
+			} // end if
+		} // end for
+
+		return maxEntry.getKey() + "   " + maxEntry.getValue() + "회";
+	}// maxUsedKey
+
 //	2. 브라우저별 접속횟수, 비율
 //		IE - xx (xx%)
 //		Chrome - xx (xx%)
-	public String connectBrowser() { 
+	public String connectBrowser() {
 
-		List<String> browsLine = new ArrayList<String>();//brow 다 읽기 - > substring해야함.
-		int startidx =0;//[]인덱스 얻기
-		int endidx=0;
-		String browser =""; //브라우저 라인  값 확인하려고 만듦
-		//browsLine for문 돌리기
-		for(String data : logLine) {
-			//인덱스
-			startidx = data.indexOf("][",6);
-			endidx = data.indexOf("][",startidx+1);
-			browser=data.substring( startidx+2, endidx);
+		List<String> browsLine = new ArrayList<String>();// brow 다 읽기 - > substring해야함.
+		int startidx = 0;// []인덱스 얻기
+		int endidx = 0;
+		String browser = ""; // 브라우저 라인 값 확인하려고 만듦
+		// browsLine for문 돌리기
+		for (String data : logLine) {
+			// 인덱스
+			startidx = data.indexOf("][", 6);
+			endidx = data.indexOf("][", startidx + 1);
+			browser = data.substring(startidx + 2, endidx);
 			browsLine.add(browser);
 //			System.out.println(browser);
-		}//end for
-		
+		} // end for
+
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		Integer count =0;
-		for(String str : browsLine ) {
-//			count = map.get(str);
+		Integer count = 0;
+		for (String str : browsLine) {
 			count = map.get(str);
-			if( count == null ) {
+			if (count == null) {
 				map.put(str, 1);
-			}else {
-				map.put(str, count+1 );
-			}//end else
-		}//end for 
-		
-		//map에 들어있는 키, 값 얻기
-		String result ="";//여기에 리턴값 넣기/////////////////////////이거 하기!!!!!!!!!!!!!!!!!!!!!!!!
-		String ind="";
-		String proportion="";
-		double pp=0;
-		
-//		String[] arr=new String[10];
-//		int i=0;
-		for(Entry<String, Integer> a : map.entrySet()) {
-			String key=a.getKey();
-			Integer value=a.getValue();
-			pp=((double)value/allCodeCnt)*100;
-			proportion= String.format("%.2f", pp);
-			result+=key+" - "+value+ "회,(" + proportion + "%)" + "<br/>";
-//			System.out.println(result);
-			///여기에 비율도 넣어야하는데 별짓거리를 다해도 IE - xx (xx%) 이런식으로 안나오네....HELP ME.. 
-			
-//			arr[i]=key+" - "+map.get(key);
-//			i++;
-//			ind=result.concat( key+" - "+map.get(key) );  //1씩 더나옴.
-			
-		}//end for
-		
-		
+			} else {
+				map.put(str, count + 1);
+			} // end else
+		} // end for
+
+		// map에 들어있는 키, 값 얻기
+		String result = "";
+		String proportion = "";
+		double pp = 0;
+
+		for (Entry<String, Integer> a : map.entrySet()) {
+			String key = a.getKey();
+			Integer value = a.getValue();
+			pp = ((double) value / allCodeCnt) * 100;
+			proportion = String.format("%.2f", pp);
+			result += "    " + key + " - " + value + "회,(" + proportion + "%)" + "\n\t";
+		} // end for
+
 		return result;
-		
-		
-		
-	}//connectBrowser
-	
+
+	}// connectBrowser
+
 //	3. 서비스를 성공적으로 수행한(200) 횟수,실패(404) 횟수
 	public String servicePerform() {
-		String succode="200";
-		String failcode ="404"; 
-		int sucCnt =0;
-		int failCnt =0;
-		for(String data : logLine) {
-			///////////////////////
-			//instance변수임 >>>이렇게 계속 instance변수로 카운트 올려도되는지 모르겠음. 셍각해보기
-//			allCodeCnt++;
-			//인덱스
-			if(data.contains(succode)) {
+		String succode = "200";
+		String failcode = "404";
+		int sucCnt = 0;
+		int failCnt = 0;
+		for (String data : logLine) {
+			// 인덱스
+			if (data.contains(succode)) {
 				sucCnt++;
-			}else if(data.contains(failcode)) {
+			} else if (data.contains(failcode)) {
 				failCnt++;
 			}
-		}//end for
-		return "서비스 성공(200)횟수 : "+sucCnt+"회 ,실패(404) 횟수 : "+failCnt+"회";
-		
-	}//servicePerform
+		} // end for
+		return "서비스 성공(200)횟수 : " + sucCnt + "회 ,실패(404) 횟수 : " + failCnt + "회";
+
+	}// servicePerform
 
 //	4. 요청이 가장 많은 시간 [10시]
 	public String mostRequestTime() {
 		List<String> timeLine = new ArrayList<String>();
-		String time =""; //브라우저 라인  값 확인하려고 만듦
+		String time = ""; // 브라우저 라인 값
 
-		for(String data : logLine) {
-			//인덱스
-			time=data.substring(data.indexOf(" ")+1,data.indexOf(" ")+3);
+		for (String data : logLine) {
+			// 인덱스
+			time = data.substring(data.indexOf(" ") + 1, data.indexOf(" ") + 3);
 			timeLine.add(time);
-//			System.out.println(time);
-		}//end for
+		} // end for
+
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		for(String str : timeLine ) {
+		for (String str : timeLine) {
 			Integer count = map.get(str);
-			if( count == null ) {
+
+			if (count == null) {
 				map.put(str, 1);
-		}else {
-				map.put(str, count+1 );
-		}//end else
-		}
-		
-		//value값 기준 최대값구하기
-//		Integer maxKey = (Collections.max(map.values()) );// 보류
-		
-		Entry<String, Integer> maxEntry=null;
-		
-		Set<Entry<String, Integer>> entrySet=map.entrySet();
+			} else {
+				map.put(str, count + 1);
+			} // end else
+
+		} // end for
+
+		Entry<String, Integer> maxEntry = null;
+
+		Set<Entry<String, Integer>> entrySet = map.entrySet();
 		for (Entry<String, Integer> entry : entrySet) {
 			if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
 				maxEntry = entry;
-			}//end if
-		}//end for
-		
-		return "요청이 가장 많은 시간 : "+maxEntry.getKey()+"시";
-	}//mostRequestTime
+			} // end if
+		} // end for
+
+		return "요청이 가장 많은 시간 : " + maxEntry.getKey() + "시";
+	}// mostRequestTime
 
 //	5. 비정상적인 요청(403)이 발생한 횟수,비율구하기
 	public String unNormalRequest() {
-		String errcode ="403"; //브라우저 라인  값 확인하려고 만듦
+		String errcode = "403";
 		boolean flag = false;
-		int errcnt =0;
-		for(String data : logLine) {
-			//인덱스
-			flag=data.contains(errcode);
-			if(flag) { errcnt++; }
-		}//end for
-//		System.out.println("403error 개수 :"+errcnt);
-		
-		//비율
-		double pp=(errcnt/(double)allCodeCnt)*100;
-		
-		String proportion= String.format("%.2f", pp);
-		
-		return "비정상적요청(403)발생 횟수 : "+errcnt+"회, 비율 : "+proportion +"%";
-	}//unNormalRequest
+		int errcnt = 0;
+		for (String data : logLine) {
+			// 인덱스
+			flag = data.contains(errcode);
+			if (flag) {
+				errcnt++;
+			}
+		} // end for
+
+		// 비율
+		double pp = (errcnt / (double) allCodeCnt) * 100;
+
+		String proportion = String.format("%.2f", pp);
+
+		return "비정상적요청(403)발생 횟수 : " + errcnt + "회, 비율 : " + proportion + "%";
+	}// unNormalRequest
 
 //	6. 요청에 대한 에러(500)가 발생한 횟수, 비율 구하기
 	public String requestError() {
-		String errcode ="500"; //브라우저 라인  값 확인하려고 만듦
+		String errcode = "500";
 		boolean flag = false;
-		int errcnt =0;
-		for(String data : logLine) {
-			//인덱스
-			flag=data.contains(errcode);
-			if(flag) { errcnt++; }
-		}//end for
-//		System.out.println("500error 개수 :"+errcnt);
-		
-		double pp=(errcnt/(double)allCodeCnt)*100;
-		
-		String proportion= String.format("%.2f", pp);
-		
-		return "비정상적요청(505) 발생한 횟수 : "+errcnt+"회, 비율 : "+ proportion +"%";
-	}//requestError
+		int errcnt = 0;
+		for (String data : logLine) {
+			// 인덱스
+			flag = data.contains(errcode);
+			if (flag) {
+				errcnt++;
+			}
+		} // end for
+
+		double pp = (errcnt / (double) allCodeCnt) * 100;
+
+		String proportion = String.format("%.2f", pp);
+
+		return "비정상적요청(505) 발생한 횟수 : " + errcnt + "회, 비율 : " + proportion + "%";
+	}// requestError
 
 //	7. 입력되는 라인에 해당하는 정보출력
 //	(예 :1000~1500라인 이 입력되면)
 	public String maxUsedValue() throws IOException {
 		logLine = new ArrayList<String>();
 		List<String> keyLine = new ArrayList<String>();
-		Map<String,Integer> map=new HashMap<String,Integer>();
-		Map<String,Integer> maxMap=new HashMap<String,Integer>();
-		
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Integer> maxMap = new HashMap<String, Integer>();
+
 		File file = new File(sd.getTitle());
-		
-		if(file.exists()) {
+
+		if (file.exists()) {
 			BufferedReader br = null;
-			try{
+			try {
 				// 2. Stream을 사용한 연결
 				br = new BufferedReader(new FileReader(file));
-				// 3. 줄 단위로 읽기 
+				// 3. 줄 단위로 읽기
 				String data = "";
 				String key = "";
-				
-				
-				
-				
-//				while ( (data = br.readLine()) != null) { //\n전까지 읽어 들인다.
-//					logLine.add(data);//1986까지 들어가있는 김성태
-//						if(data.contains("key")){
-//							key=data.substring( data.indexOf("=")+1, data.indexOf("&"));
-//							keyLine.add(key);
-//						}//end if
-//					}//end while
-				
-				
-//				while ( (data = br.readLine()) != null) { //\n전까지 읽어 들인다.		
-				allCodeCnt = 0;
-					for(int i=(Integer.valueOf(sd.getJtfFirstLine().getText())-1); i<Integer.valueOf(sd.getJtfLastLine().getText()); i++) {
-						allCodeCnt++;
-					logLine.add(data=br.readLine());//1986까지 들어가있는 김성태
-						if(data.contains("key")){
-							key=data.substring( data.indexOf("=")+1, data.indexOf("&"));
+
+				if (allCodeCnt > Integer.valueOf(sd.getJtfLastLine().getText()) - 1) { // allCodeCnt 넘어가는 lastLine값
+																						// 받았을때.
+					for (int i = (Integer.valueOf(sd.getJtfFirstLine().getText()) - 1); i < Integer
+							.valueOf(sd.getJtfLastLine().getText()) - 1; i++) {
+						logLine.add(data = br.readLine());// 1986까지 들어가있는 김성태
+						if (data.contains("key")) {
+							key = data.substring(data.indexOf("=") + 1, data.indexOf("&"));
 							keyLine.add(key);
-						}//end if
-					}//end if
-				
-				
-				
-				
-				
-				
-				
-			}//try	
+						} // end if
+					} // end if
+				} else {
+					JOptionPane.showMessageDialog(null, "최대값 " + (allCodeCnt) + "까지 입력가능ㅋ");
+					// 인덱스는 0~1986까지 저장되어있고 줄은 1~1987까지라서 설정해야함
+				}
+			} // try
 			finally {
 				if (br != null) {
-					//4. 연결끊기
+					// 4. 연결끊기
 					br.close();
-				}//end if
-			}//finally
-			
-		}else {
+				} // end if
+			} // finally
+
+		} else {
 			JOptionPane.showMessageDialog(null, file + "");
 		} // end if
-		
-		int num=0;
-		for(String str : keyLine ) {
-			Integer count = map.get(str);
-			if( count == null ) {
-				map.put(str, 1);
-			}else {
-				map.put(str, count+1 );
-			}//end else
-			num++;
-		}//end for
 
-		double proportion=(double)num;
-		for(String opp : map.keySet() ) {
-			
-//			System.out.println(opp + " : " + map.get(opp) + "(" + (map.get(opp)/proportion)*100+"%)" );
-//			System.out.printf( "%s \t %d번(%.2f%%)\n",opp, map.get(opp), ((map.get(opp)/proportion)*100)  );
+		int num = 0;
+		for (String str : keyLine) {
+			Integer count = map.get(str);
+			if (count == null) {
+				map.put(str, 1);
+			} else {
+				map.put(str, count + 1);
+			} // end else
+			num++;
+		} // end for
+
+		double proportion = (double) num;
+		for (String opp : map.keySet()) {
 			maxMap.put(opp, map.get(opp));
-		}//end for
-		
-		Entry<String, Integer> maxEntry=null;
-		
-		Set<Entry<String, Integer>> entrySet=maxMap.entrySet();
+		} // end for
+
+		Entry<String, Integer> maxEntry = null;
+
+		Set<Entry<String, Integer>> entrySet = maxMap.entrySet();
 		for (Entry<String, Integer> entry : entrySet) {
 			if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
 				maxEntry = entry;
-			}//end if
-		}//end for
-		
-		System.out.println( " daf" + maxMap);
-//		System.out.println( "최다사용 키 : " + maxEntry.getKey() + ", 최다사용 키의 횟수 : " + maxEntry.getValue() );
-//		System.out.printf( "%s : %.2f%%", maxEntry.getKey(), ((maxEntry.getValue()/proportion)*100));
-		return maxEntry.getKey()+ "   " + maxEntry.getValue() +"회";
-	}//maxUsedValue
-	
-	
+			} // end if
+		} // end for
 
-	public void lineInfo() {
-		
-	}//lineInfo
-	
-	public String abc() {
-		return "오예스";
-	}
-	
+		return maxEntry.getKey() + "   " + maxEntry.getValue() + "회";
+	}// maxUsedValue
 
-}//SelectDialogEvt
+}// SelectDialogEvt

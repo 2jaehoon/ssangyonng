@@ -17,17 +17,16 @@ public class SistLoginEvt extends WindowAdapter implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-//		if(ae.getSource()==sl.getJbtnLogin() || ae.getSource()==sl.getJtfPw() || ae.getSource()==sl.getJtfId()); 
 		inputPlz();
 	}//actionPerformed
 	
 	public void inputPlz() {
-		String i = sl.getJtfId().getText();
-		String j = new String(sl.getJtfPw().getPassword()); 
+		String id = sl.getJtfId().getText();
+		String pw = new String(sl.getJtfPw().getPassword()); //*대신 String 문자열 받으려고
 		
-		if(i.isEmpty()) {
+		if(id.isEmpty()) {
 			JOptionPane.showMessageDialog( null , "Id를 입력해주세요.");
-		}else if(j.isEmpty()) {
+		}else if(pw.isEmpty()) {
 			JOptionPane.showMessageDialog( null , "PassWord를 입력해주세요.");
 		}else {
 			compareLogin();
@@ -39,22 +38,18 @@ public class SistLoginEvt extends WindowAdapter implements ActionListener {
 		hm.put("admin", "1234");
 		hm.put("root", "1111");
 		hm.put("administrator", "12345");
-		String a = sl.getJtfId().getText();
+		String key = sl.getJtfId().getText(); //id 값
 		//sl.getJtfPw()는 JtfPw의 주소
 		//JPasswordField는 getPassword메소드로 값을 가져올수 있고 그 값은 char[]에 담겨있다.
 		//String클래스 생성자에 String(char[] value)로 비밀번호를 가져와
 		//String에 넣어준다.
-		String b = new String(sl.getJtfPw().getPassword()); 
-		if(hm.containsKey(a)) {
-		    if(hm.get(a).equals(b)) {
+		String value = new String(sl.getJtfPw().getPassword()); //pw 값 
+		if(hm.containsKey(key)) {
+		    if(hm.get(key).equals(value)) {
 		    	new SelectDialog(sl);
 		    	sl.dispose();
 		    	
-		    }else if(b=="asd"){
-		    	/////////////////
-		    	
 		    }else {
-  
 		       JOptionPane.showMessageDialog( null , "PassWord 정보가 잘못되었습니다.");
 		    }//end else
 		 }else {
@@ -67,5 +62,7 @@ public class SistLoginEvt extends WindowAdapter implements ActionListener {
 	public void windowClosing(WindowEvent e) {
 		sl.dispose();
 	}//windowClosing
+
+	
 
 }//SistLoginEvt

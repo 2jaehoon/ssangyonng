@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 public class ViewPrintEvt extends WindowAdapter implements ActionListener {
 	private ViewPrint vp;
 	
-	
 	public ViewPrintEvt( ViewPrint vp) {
 		this.vp=vp;
 		
@@ -25,5 +24,6 @@ public class ViewPrintEvt extends WindowAdapter implements ActionListener {
 	public void windowClosing(WindowEvent we) {
 		vp.dispose();
 	}//windowClosing
+
 
 }//ViewPrintEvt

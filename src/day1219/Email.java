@@ -1,7 +1,7 @@
 package day1219;
 
 public class Email {
-	String email;
+	private String email;
 
 //	public Email() {
 //		
@@ -11,6 +11,12 @@ public class Email {
 		this.email = email;
 	}
 	
+	public void asd() {
+		System.out.println(email);
+	}
 	
+	public String getEmail() {
+		return email;
+	}
 	
 }

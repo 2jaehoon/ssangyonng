@@ -25,7 +25,7 @@ public class SistLogin extends JFrame {
    
 
    public SistLogin() {
-      super("로그인");
+      super("로그분석 로그인창");
       
      
       
