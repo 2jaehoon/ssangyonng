@@ -29,13 +29,13 @@ public class SimpleChatClientThread extends JFrame implements ActionListener, Ru
 	private Thread thread;
 	
 	public SimpleChatClientThread() {
-		super("::::::::::::::::::::: Ã¤ÆÃÅ¬¶óÀÌ¾ðÆ® :::::::::::::::::::::");
+		super("::::::::::::::::::::: Ã¤ï¿½ï¿½Å¬ï¿½ï¿½ï¿½Ì¾ï¿½Æ® :::::::::::::::::::::");
 		jtfTalk=new JTextField();
 		jtaTalkDisplay=new JTextArea();
 		JScrollPane jspCenter=new JScrollPane( jtaTalkDisplay );
 		
-		jtfTalk.setBorder(new TitledBorder("´ëÈ­ÀÔ·Â"));
-		jspCenter.setBorder(new TitledBorder("´ëÈ­"));
+		jtfTalk.setBorder(new TitledBorder("ï¿½ï¿½È­ï¿½Ô·ï¿½"));
+		jspCenter.setBorder(new TitledBorder("ï¿½ï¿½È­"));
 		
 		jtaTalkDisplay.setEditable(false);
 		
@@ -49,7 +49,7 @@ public class SimpleChatClientThread extends JFrame implements ActionListener, Ru
 		
 		
 		
-		jtfTalk.addActionListener(this);//¸Þ½ÃÁö¸¦ º¸³»´Â ÄÚµå
+		jtfTalk.addActionListener(this);//ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
 		addWindowListener(new WindowAdapter() {
 
 			@Override
@@ -67,7 +67,7 @@ public class SimpleChatClientThread extends JFrame implements ActionListener, Ru
 			
 		});
 		
-		try { //¼­¹ö Á¢¼Ó ÈÄ ¸Þ½ÃÁö¸¦ ¹«ÇÑ ·çÇÁ·Î ÀÐ¾îµéÀÎ´Ù.
+		try { //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½Î´ï¿½.
 			connectToServer();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -102,48 +102,48 @@ public class SimpleChatClientThread extends JFrame implements ActionListener, Ru
 	
 	public void connectToServer() throws UnknownHostException, IOException {
 		String ip=JOptionPane.showInputDialog(
-				"Á¢¼ÓÇÒ ¼­¹öÀÇ ipÁÖ¼Ò¸¦ ÀÔ·Â\n 132,133,134,135,162,137,139,140,141,142,143,144,146,149,150,151,152,154");
-		//ÀÔ·Â¹ÞÀº ip·Î ¼ÒÄÏÀ» »ý¼º => ¼­¹ö¿¡ ¿¬°áÀ» ½Ãµµ
+				"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ipï¿½Ö¼Ò¸ï¿½ ï¿½Ô·ï¿½\n 132,133,134,135,162,137,139,140,141,142,143,144,146,149,150,151,152,154");
+		//ï¿½Ô·Â¹ï¿½ï¿½ï¿½ ipï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ãµï¿½
 		client=new Socket("211.63.89."+ip, 55000);
-		//½ºÆ®¸² 
+		//ï¿½ï¿½Æ®ï¿½ï¿½ 
 		disReadStream=new DataInputStream(client.getInputStream());
 		dosWriteStream=new DataOutputStream( client.getOutputStream());
 		
-		jtaTalkDisplay.setText("¼­¹ö¿¡ Á¢¼ÓÇÏ¿´½À´Ï´Ù.\n");
+		jtaTalkDisplay.setText("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.\n");
 		
-		//¸Þ½ÃÁö µ¿½Ã¿¡ ÀÐ±â
+		//ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã¿ï¿½ ï¿½Ð±ï¿½
 		if(thread == null) {
-			//1. °´Ã¼ »ý¼º(this·Î ºÒ·¯¿Íµµ µÊ this(¸Å°³º¯¼ö °¡´É))
+			//1. ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½(thisï¿½ï¿½ ï¿½Ò·ï¿½ï¿½Íµï¿½ ï¿½ï¿½ this(ï¿½Å°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½))
 			//2. 
-			thread = new Thread(this); //ÇöÀç °´Ã¼¿Í has a °ü°è·Î Thread¸¦ »ý¼º
+			thread = new Thread(this); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ has a ï¿½ï¿½ï¿½ï¿½ï¿½ Threadï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			thread.start();
 		}//end if
 	}//connectToServer
 	
 	/**
-	 * º¸³»¿Â ¸Þ½ÃÁö¸¦ ¹«ÇÑ·çÇÁ·Î ÀÐ´Â´Ù.
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð´Â´ï¿½.
 	 * @throws IOException 
 	 */
 	@Override
-	//run method¸¦ ¿À¹ö¶óÀÌµå
+	//run methodï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
 	public void run()  {
-		//µ¿½Ã¿¡ Ã³¸®µÇ¾î¾ßÇÒ ÄÚµå Á¤ÀÇ
+		//ï¿½ï¿½ï¿½Ã¿ï¿½ Ã³ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ ï¿½ï¿½ï¿½ï¿½
 		String msg="";
 		try {
 			while(true) {
-				//¸Þ½ÃÁö¸¦ ÀÐ¾î µé¿©
+				//ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ ï¿½é¿©
 				msg=disReadStream.readUTF();
-				//´ëÈ­Ã¢¿¡ Ãâ·ÂÇÑ´Ù. 
+				//ï¿½ï¿½È­Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½. 
 				jtaTalkDisplay.append(msg +" \n");
 			}//end while
 		}catch(IOException ie) {
-			JOptionPane.showMessageDialog(this, "´ëÈ­»ó´ë°¡ Á¢¼ÓÀ» Á¾·á ÇÏ¿´½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(this, "ï¿½ï¿½È­ï¿½ï¿½ë°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			ie.printStackTrace();
 		}//end catch
 	}//readMsg
 	
 	/**
-	 *Á¢¼ÓÀÚ¿¡°Ô ¸Þ½ÃÁö¸¦ º¸³»´Â ÀÏ 
+	 *ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ 
 	 */
 	public void sendMsg() {
 	
@@ -151,10 +151,10 @@ public class SimpleChatClientThread extends JFrame implements ActionListener, Ru
 			String msg=jtfTalk.getText().trim();
 			if( !msg.isEmpty() ) {
 				try {
-					//´ëÈ­Ã¢¿¡ ´ëÈ­¸¦ ¿Ã¸®°í
-					jtaTalkDisplay.append("[ ÀçÈÆ ] : "+msg+"\n");
-					//¸Þ¼¼Áö¸¦ º¸³»ÀÚ
-					dosWriteStream.writeUTF("[ ÀçÈÆ ] : "+msg);
+					//ï¿½ï¿½È­Ã¢ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½
+					jtaTalkDisplay.append("[ ï¿½ï¿½ï¿½ï¿½ ] : "+msg+"\n");
+					//ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+					dosWriteStream.writeUTF("[ ï¿½ï¿½ï¿½ï¿½ ] : "+msg);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
